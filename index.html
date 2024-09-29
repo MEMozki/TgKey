@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Key Generator</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #111;
+      color: #ddd;
+      font-family: Arial, sans-serif;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(8, 50px);
+      gap: 5px;
+    }
+    .cell {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #3498db;
+      font-weight: bold;
+      font-size: 14px;
+      color: white;
+    }
+    .cell.light {
+      background-color: #85c1e9;
+    }
+    .cell.dark {
+      background-color: #2e4053;
+    }
+    .keys {
+      margin-top: 20px;
+      text-align: center;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grid" id="grid"></div>
+  <div class="keys" id="keys"></div>
+
+  <script>
+    // Генерация случайных шестнадцатеричных значений
+    function getRandomHex() {
+      return Math.floor(Math.random() * 256).toString(16).padStart(2, '0').toUpperCase();
+    }
+
+    function generateGrid() {
+      const grid = document.getElementById('grid');
+      const keys = document.getElementById('keys');
+      let hexKeys = '';
+
+      for (let i = 0; i < 64; i++) {
+        // Генерация случайного цвета фона для ячеек
+        const cellColorClass = Math.random() > 0.5 ? 'light' : 'dark';
+        const hexValue = getRandomHex();
+
+        // Создание и добавление ячеек в сетку
+        const cell = document.createElement('div');
+        cell.className = `cell ${cellColorClass}`;
+        cell.textContent = hexValue;
+        grid.appendChild(cell);
+
+        // Сохранение значений в формате для отображения ниже
+        if (i % 8 === 0 && i !== 0) hexKeys += '\n';
+        hexKeys += hexValue + ' ';
+      }
+
+      // Вывод значений под сеткой
+      keys.textContent = hexKeys.trim();
+    }
+
+    // Генерация сетки при загрузке страницы
+    window.onload = generateGrid;
+  </script>
+
+</body>
+</html>
